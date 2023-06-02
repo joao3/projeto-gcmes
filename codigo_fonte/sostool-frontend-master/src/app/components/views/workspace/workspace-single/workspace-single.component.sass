@@ -1,0 +1,129 @@
+$tabs-link-color: #2155CD
+$tabs-link-hover-color: white
+$tabs-toggle-link-active-color: white
+
+$tabs-toggle-link-radius: 6px 6px 0px 0px
+$tabs-toggle-link-border-width: 2px 2px 0px 2px
+$tabs-toggle-link-hover-background-color: #6fc2e3
+$tabs-toggle-link-hover-border-color:#6fc2e3
+$tabs-toggle-link-border-color: #0AA1DD
+$tabs-toggle-link-active-background-color:#0AA1DD
+$tabs-toggle-link-active-border-color: #0AA1DD
+
+
+.top-container
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+
+#activity-checkbox
+  pointer-events: none
+  margin-left: 10px
+  margin-bottom: 10px
+
+
+  &:before
+    display: block
+    width: 13px
+    height: 20px
+    border: none
+    box-shadow: none
+    color: #0CFF15
+    content: "✓"
+    font-size: 15px
+    font-weight: bold
+    background: #3E8ED0
+
+.rounded
+  margin-top: 60px
+  border-top: 8px solid #2155CD
+  border-radius: 3px
+
+.hero-workspace
+  .hero-body
+    display: flex
+    padding-bottom: 0.0rem
+    max-height: 95px
+    .title
+      grid-area: logo
+      color: #2155CD
+      max-width: 40%
+      padding-right: 5%
+    .buttons
+      padding-bottom: 3%
+    .activity-buttons
+      padding-left: 20px
+
+.heroTeamName
+  .hero-body
+    display: flex
+    flex-wrap: wrap
+    .title
+      grid-area: logo
+      color: #2155CD
+      max-width: 40%
+      padding-right: 5%
+    .buttons
+      padding-bottom: 3%
+    .hero-foot
+      .tabs
+        .container
+          .tab
+            margin: 20px
+
+.hero
+  .hero-body
+    .title
+      color: #2155CD
+    .container
+      .title
+        color: #2155CD
+      .subtitle
+        color: #0AA1DD
+
+.tabs
+  li
+    margin-left: 10px
+    margin-right: 10px
+
+aside
+  width: 15%
+  padding-left: .5rem
+  margin-left: .5rem
+  float: right
+  box-shadow: inset 5px 0 5px -5px #29627e
+  font-style: italic
+  color: #29627e
+
+
+aside > div
+    margin: .5rem
+
+.viewRoles
+  h1
+    font-size: 1.5rem
+    margin: 1rem 5rem 1rem 0.1rem
+  .listRoleElement
+    margin: 1rem
+  .listRoleInMany
+    margin: 1rem
+
+
+.role-selection
+  display: none
+  margin-top: 20px
+  &.is-active
+    display: block
+
+.role-creation
+  display: none
+  margin-top: 20px
+  &.is-active
+    display: block
+
+@import "../../../../../styles.sass"
+
+
+
+
+

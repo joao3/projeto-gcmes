@@ -1,0 +1,56 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a class="navbar-item" >
+      <img src="/assets/img/logo.png"  width="45" height="28">
+    </a>
+    <div class="navbar-burger" data-target="navBar" (click)="toggleButton(navBurguer, navMenu)"  #navBurguer>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <div id="navBar" class="navbar-menu" #navMenu>
+    <div class="navbar-start">
+      <a class="navbar-item" routerLink="">
+        SoS Tool Home
+      </a>
+      <a class="navbar-item" routerLink="workspaces">
+        Workspaces
+      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Models
+        </a>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" routerLink="model-roles">
+            Model-Roles
+          </a>
+          <a class="navbar-item" routerLink="model-responsibility">
+            Model-Responsibilities
+          </a>
+        </div>
+      </div>
+      <a class="navbar-item" routerLink="users">
+        Users
+      </a>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Docs 📄
+        </a>
+        <div class="navbar-dropdown is-boxed">
+          <a class="navbar-item" href="https://github.com/dupradosantini/sostool-frontend">
+            GitHub
+          </a>
+          <a class="navbar-item" href="https://dupradosantini.notion.site/TCC-Planning-c7ba9e924f1044ff8d652c244e227bc8">
+            Roadmap
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item" href="http://localhost:8080/swagger-ui/">
+            Swagger-UI
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

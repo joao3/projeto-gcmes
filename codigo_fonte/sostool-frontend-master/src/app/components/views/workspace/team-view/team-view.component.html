@@ -1,0 +1,111 @@
+<div class="boxes is-multiline is-mobile">
+  <div class="box is-one-quarter"
+  *ngFor="let role of teamAssignedRoles;"
+  (click)="seeRole(seeRoleModal, role.id)">
+    <p class="title">
+      {{role.name}}
+    </p>
+    {{role.description}}
+  </div>
+</div>
+
+
+<!-- MODAL TO ADD SOME RESPONSIBILITY TO A ROLE!-->
+<div class="modal is-dark" #seeRoleModal>
+  <div class="modal-background is-dark"></div>
+  <div class="modal-card is-dark">
+    <header class="modal-card-head is-dark">
+      <p class="modal-card-title">See this role in details!</p>
+      <button class="button is-small" (click)="addMemberToggle(FinishButton,ResponsibilityCreationMode,ResponsibilitySelectionMode)">+ Members</button>
+      <button class="delete" aria-label="close" (click)="cancelToggle(seeRoleModal,FinishButton,ResponsibilityCreationMode, ResponsibilitySelectionMode)"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="content">
+        <!-- MODAL CONTENT -->
+        <h1> Role Name: </h1>
+        <p class="role-name"> {{selectedRole.name}} </p>
+        <h1> Description: </h1>
+        <p class="role-description"> {{selectedRole.description}}</p>
+        <label class="label">Members</label>
+        <div *ngIf="roleAssignedMembers.length > 0">
+          <div class="resp-desc-div" *ngFor="let member of roleAssignedMembers">
+            <div class="role-resp-desc">
+              <p> {{member.name}} </p>
+            </div>
+            <button class="delete" id="member-delete" (click)="removeMemberFromRole(member)"></button>
+          </div>
+        </div>
+
+        <div class="user-selection" *ngIf="isAddUser">
+          <label class="label">Choose which User will be assigned </label>
+          <div class="select">
+            <select #UserSelection>
+              <option *ngFor="let user of userArray;">
+                {{user.name}}
+              </option>
+            </select>
+          </div>
+          <br/>
+          <button class="button is-link is-small" (click)="copyUserValue(UserSelection.value, FinishButton)"> Confirm Selection </button>
+        </div>
+
+        <label class="label">Responsibilities</label>
+        <div *ngIf="selectedRole?.roleAssignedResponsibilities">
+          <div class="resp-desc-div" *ngFor="let responsibility of selectedRole?.roleAssignedResponsibilities">
+            <div class="role-resp-desc">
+              <p> {{responsibility.description}} </p>
+            </div>
+            <button class="delete" (click)="removeRespFromRole(responsibility)"></button>
+          </div>
+        </div>
+        <div class="responsibility-selection" #ResponsibilitySelectionMode>
+          <label class="label">Choose which responsibility will be assigned </label>
+          <div class="select">
+            <select #ResponsibilitySelection>
+              <option *ngFor="let responsibility of workspaceResponsibilities;">
+                {{responsibility.description}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="responsibility-creation" #ResponsibilityCreationMode>
+          <div class="field">
+            <label class="label">Description</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="e.g. Description of a Responsibilty" #responsibilityDesc>
+            </div>
+          </div>
+
+          <label class="label">Choose a Model Responsibility</label>
+          <div class="select">
+            <select #modelResponsibilitySelection>
+              <option *ngFor="let modelResponsibility of modelResponsibilities;">
+                {{modelResponsibility.description}}
+              </option>
+            </select>
+          </div>
+          <button class="button is-link" (click)="copyModelResponsibility(modelResponsibilitySelection.value, responsibilityDesc)"> Confirm Selection </button>
+        </div>
+        <!-- MODAL CONTENT -->
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="resp-buttons">
+        <button class="button is-primary new-resp-button" (click)="responsibilityCreationTypeSelection(ResponsibilityCreationMode, ResponsibilitySelectionMode, true, FinishButton)">
+          + New Responsibility
+        </button>
+        <br/>
+        <button class="button is-primary is-light existing-resp-button" (click)="responsibilityCreationTypeSelection(ResponsibilitySelectionMode, ResponsibilityCreationMode , false, FinishButton)">
+          + Existing Responsibility
+        </button>
+      </div>
+      <div>
+        <button class="button is-primary" (click)="finishEdit(ResponsibilitySelection.value, seeRoleModal, responsibilityDesc.value)" disabled #FinishButton>Save</button>
+        <br/>
+        <button class="button is-link is-light" (click)="cancelToggle(seeRoleModal,FinishButton,ResponsibilityCreationMode, ResponsibilitySelectionMode)" >Cancel</button>
+      </div>
+
+    </footer>
+  </div>
+</div>

@@ -1,0 +1,334 @@
+<!-- WORKSPACE NAME HERO -->
+<div class="top-container">
+  <section class="hero-workspace is-small is-primary">
+    <div class="hero-body">
+      <p class="title">
+        {{this.workspaceName}}
+      </p>
+      <div class="buttons">
+        <button class="button is-primary" (click)="getRolesInMoreThanOneTeam(viewRolesModal)">View Roles</button>
+        <button class="button is-primary" (click)="getWorkspaceResponsibilities(viewResponsibilitiesModal)">View Responsibilities</button>
+        <!--todo view workspace members-->
+      </div>
+      <div class="buttons activity-buttons">
+        <button class="button is-info is-small" *ngFor="let activity of this.workspaceActivities" (click)="selectActivity(activity, viewActivityModal,activityDesc)">
+          {{activity.name}}
+          <input type="checkbox" id="activity-checkbox"checked *ngIf="activity.description != null">
+        </button>
+        <button class="button is-info is-light is-small" (click)="toggleModal(createActivityModal)">+Add Activity</button>
+      </div>
+    </div>
+  </section>
+  <hr class="rounded">
+</div>
+
+
+<!-- TEAM PAGE  NAME AND BUTTON HERO -->
+<section class="heroTeamName is-small is-primary" *ngIf="this.teamsArray.length>0 && !this.firstLoad" >
+  <div class="hero-body">
+    <p class="title">
+      {{this.teamsArray[this.selectedTeam].name}}
+    </p>
+    <div class="buttons">
+      <button class="button is-link" (click)="toggleModal(assignRoleToTeamModal)">+ Add Role to Team</button>
+      <button class="button is-danger" (click)="deleteTeamInWorkspace(this.teamsArray[this.selectedTeam].id)">Delete Team</button>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM TAB HERO -->
+<section class="hero is-fullheight">
+  <div class="hero-body" *ngIf="!this.firstLoad">
+    <div class="container has-text-centered" *ngIf="this.teamsArray.length>0">
+      <p class="subtitle"*ngIf="this.teamsArray[this.selectedTeam].teamAssignedRoles.length <= 0">
+        This is the {{this.teamsArray[this.selectedTeam].name}} team page!
+        <br>
+        It has no roles yet.
+      </p>
+
+      <div class="container has-text-centered" *ngIf="this.teamsArray[this.selectedTeam].teamAssignedRoles.length > 0">
+        <app-team-view
+        [teamAssignedRoles]="this.teamsArray[this.selectedTeam].teamAssignedRoles"
+        [workspaceResponsibilities]="this.workspaceResponsibilities"
+        [workspaceId]="this.workspaceId"
+        [modelResponsibilities]="this.modelResponsibilities"
+        [teamId]="this.selectedTeamId"
+        ></app-team-view>
+      </div>
+    </div>
+    <div class="container has-text-centered" *ngIf="this.teamsArray.length<=0">
+      <p class="title">
+        This Project has no teams!
+      </p>
+      <p class="subtitle">
+        Why dont you create one?
+      </p>
+    </div>
+  </div>
+
+
+  <div class="hero-body" *ngIf="this.firstLoad">
+    <div class="container has-text-centered">
+      <p class="title" *ngIf="this.teamsArray.length<=0"> This workspace has no teams yet! </p>
+      <p class="subtitle" *ngIf="this.teamsArray.length<=0"> You should start by creating one with the button below</p>
+      <p class="title" *ngIf="this.teamsArray.length>0"> No team selected!</p>
+      <p class="subtitle" *ngIf="this.teamsArray.length>0"> You can select one of the options below</p>
+    </div>
+  </div>
+
+
+  <!-- TABS -->
+  <div class="hero-foot">
+    <nav class="tabs is-centered is-boxed is-toggle is-medium">
+      <div class="container">
+        <ul #tabs>
+          <li class="tab" *ngFor="let team of teamsArray; let i = index;" (click)="selectTeam(i,tabs,team.id)">
+            <a class="names">{{team.name}}</a>
+          </li>
+          <li class="add-team-tab" (click)="toggleModal(addTeamModal)">
+            <a>
+              <span> + Add Team </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<!-- MODAL TO CREATE A ROLE AND/OR ADD ROLE TO A TEAM !-->
+<div class="modal is-dark" #assignRoleToTeamModal>
+  <div class="modal-background is-dark"></div>
+  <div class="modal-card is-dark">
+    <header class="modal-card-head is-dark">
+      <p class="modal-card-title">Assign a Role to a Team</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(assignRoleToTeamModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <label class="label">Choose which role will be assigned </label>
+      <button class="button is-link new-role-button"(click)="roleCreationTypeSelection(RoleCreation, RoleSelection, true)">New Role</button>
+      <button class="button is-link is-light existing-role-button" (click)="roleCreationTypeSelection(RoleSelection, RoleCreation, false)" >Existing Role</button>
+      <br/>
+      <div  class="role-creation is-active" #RoleCreation>
+        <!-- ROLE CREATION CONTENT-->
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="e.g Software Engineer" #roleName>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Description</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="e.g. Description of a Software Engineer" #roleDesc>
+          </div>
+        </div>
+
+        <label class="label">Choose a Model Role</label>
+        <div class="select">
+          <select #modelRoleSelection>
+            <option *ngFor="let modelRole of modelRoles;">
+              {{modelRole.name}}
+            </option>
+          </select>
+        </div>
+        <button class="button is-link" (click)="copyModelRole(modelRoleSelection.value, roleName, roleDesc)"> Confirm Selection </button>
+      </div>
+      <!--END OF ROLE CREATION CONTENT-->
+      <div class="role-selection" #RoleSelection>
+        <div class="select">
+          <select #RoleSelectionResult>
+            <option *ngFor="let role of workspaceRoles;">
+              {{role.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+       <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link"
+      (click)="assignRoleToTeam(RoleSelectionResult.value, assignRoleToTeamModal, tabs)"
+      *ngIf="!isNewRoleCreation">Assign Role</button>
+
+      <button class="button is-link"
+      (click)="createRoleInWorkspace(roleName.value, roleDesc.value, assignRoleToTeamModal)"
+      *ngIf="isNewRoleCreation">Finish Creation</button>
+
+      <button class="button is-link is-light" (click)="toggleModal(assignRoleToTeamModal)" >Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<!-- MODAL TO CREATE A NEW TEAM IN THIS WORKSPACE -->
+<div class="modal is-dark" #addTeamModal>
+  <div class="modal-background is-dark"></div>
+  <div class="modal-card is-dark">
+    <header class="modal-card-head is-dark">
+      <p class="modal-card-title">Add New Team</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(addTeamModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g Software Engineer" #teamName>
+        </div>
+      </div>
+       <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link" (click)="createTeamInWorkspace(teamName.value, addTeamModal)" >Create Team</button>
+      <button class="button is-link is-light" (click)="toggleModal(addTeamModal)">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<!--MODAL TO VIEW ROLES IN WORKSPACE-->
+<div class="modal is-dark" #viewRolesModal>
+  <div class="modal-background is-dark"></div>
+  <div class="modal-card is-dark">
+    <header class="modal-card-head is-dark">
+      <p class="modal-card-title">Roles in this Workspace</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(viewRolesModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="viewRoles">
+        <h1 *ngIf="workspaceRoles.length==0"> No role in this workspace yet </h1>
+        <h1 *ngIf="workspaceRoles.length>0"> List of Roles: </h1>
+        <div class="listRoleElement" *ngFor="let role of workspaceRoles">
+          <li> {{role.name}} </li>
+        </div>
+        <h1 *ngIf="rolesInMany.length>0"> Roles in more than one team: </h1>
+        <div class="listRoleInMany" *ngFor="let role of rolesInMany">
+          <li> {{role.name}} </li>
+        </div>
+      </div>
+       <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link is-light" (click)="toggleModal(viewRolesModal)">Close</button>
+    </footer>
+  </div>
+</div>
+
+<!--MODAL TO VIEW RESPONSIBILITIES IN WORKSPACE-->
+<div class="modal is-dark" #viewResponsibilitiesModal>
+  <div class="modal-background is-dark"></div>
+  <div class="modal-card is-dark">
+    <header class="modal-card-head is-dark">
+      <p class="modal-card-title">Responsibilities in this Workspace</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(viewResponsibilitiesModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="viewRoles">
+        <h1 *ngIf="workspaceResponsibilities.length==0"> No responsibilities in this workspace yet </h1>
+        <h1 *ngIf="workspaceResponsibilities.length>0"> List of Responsibilities: </h1>
+        <div class="listRoleElement" *ngFor="let responsibility of workspaceResponsibilities">
+          <li> {{responsibility.description}} </li>
+        </div>
+      </div>
+       <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link is-light" (click)="toggleModal(viewResponsibilitiesModal)">Close</button>
+    </footer>
+  </div>
+</div>
+
+<!-- MODAL TO VIEW A ACTIVITY !-->
+<div class="modal" #viewActivityModal>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Activity Info</p>
+      <button class="button is-small" (click)="this.isAddUser = true">+ Collaborators</button>
+      <button class="delete" aria-label="close" (click)="closeActivity(viewActivityModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <p>{{this.selectedActivity.name}}</p>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Description</label>
+        <textarea class="textarea" id="desc" placeholder="e.g. Detailed description of an activity" [(ngModel)]="descField" #activityDesc>{{this.selectedActivity.description}}</textarea>
+      </div>
+
+      <label class="label">State</label>
+          <div class="select">
+            <select [(ngModel)]="this.selectedActivity.state" [value]="this.selectedActivity.state">
+              <option *ngFor="let state of activityStates;">
+                {{state}}
+              </option>
+            </select>
+          </div>
+
+      <label class="label">Collaborators</label>
+        <div *ngIf="selectedActivityUsers.length > 0">
+          <div class="resp-desc-div" *ngFor="let member of selectedActivityUsers">
+            <div class="role-resp-desc">
+              <p> {{member.name}} </p>
+            </div>
+          </div>
+        </div>
+
+
+      <br/>
+      <div class="user-selection" *ngIf="isAddUser">
+        <label class="label">Choose which User will be assigned </label>
+        <div class="select">
+          <select #UserSelection>
+            <option *ngFor="let user of userArray;">
+              {{user.name}}
+            </option>
+          </select>
+        </div>
+        <button class="button is-link is-small" (click)="addUserValue(UserSelection.value)"> Confirm Selection </button>
+      </div>
+
+
+
+
+
+      <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link" (click)="saveActivity(viewActivityModal, activityDesc)" [disabled]="descField===''"> Save </button>
+      <button class="button is-link is-light" (click)="closeActivity(viewActivityModal)"> Close </button>
+    </footer>
+  </div>
+</div>
+
+<!-- MODAL TO CREATE A NEW USER !-->
+<div class="modal" #createActivityModal>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Create Activity</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(createActivityModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="field">
+        <label class="label">Activity Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. Activity name example" #activityName>
+        </div>
+      </div>
+      <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link" (click)="createNewActivity(activityName.value, createActivityModal)"> Create </button>
+      <button class="button is-link is-light" (click)="toggleModal(createActivityModal)"> Cancel </button>
+    </footer>
+  </div>
+</div>

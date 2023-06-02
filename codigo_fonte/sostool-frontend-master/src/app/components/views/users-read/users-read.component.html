@@ -1,0 +1,86 @@
+<div class="hero">
+  <div class="hero-body">
+     <h1 class="title"> List of all registered users: </h1>
+     <div class="content">
+      <div class="modelResponsibilityElement" *ngFor="let user of userArray">
+        <div class="bullet-point">
+          <li> {{user.name}} </li>
+          <button class="button is-link is-small" (click)="viewUser(user,viewUserModal)">
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <button class="button is-primary" (click)="toggleModal(createUserModal)">+ New User</button>
+  </div>
+</div>
+
+<!-- MODAL TO CREATE A NEW USER !-->
+<div class="modal" #createUserModal>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Create User</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(createUserModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. Bob" #userName>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. bob@mail.com" #userMail>
+        </div>
+      </div>
+      <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link" (click)="createNewUser(userName.value, userMail.value, createUserModal)"> Create </button>
+      <button class="button is-link is-light" (click)="toggleModal(createUserModal)"> Cancel </button>
+    </footer>
+  </div>
+</div>
+
+<!-- MODAL TO VIEW A USER !-->
+<div class="modal" #viewUserModal>
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">User Info</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(viewUserModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <p>{{this.selectedUser.name}}</p>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <p>{{this.selectedUser.email}}</p>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Histórico de Cargos</label>
+        <div class="control" *ngFor="let item of this.selectedUsersHistory">
+          <p>
+            {{item.role.name}} - Started: {{prettyDate(item.dateStart)}}
+            <span *ngIf="item.dateEnd" class="end-text">- Ended: {{prettyDate(item.dateEnd)}}</span>
+          </p>
+        </div>
+      </div>
+      <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link is-light" (click)="toggleModal(viewUserModal)"> Close </button>
+    </footer>
+  </div>
+</div>

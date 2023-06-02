@@ -1,0 +1,69 @@
+<div class="hero">
+  <div class="hero-body">
+     <h1 class="title"> List of all Model Responsibilities that are available: </h1>
+     <div class="content">
+      <div class="modelResponsibilityElement" *ngFor="let responsibility of modelResponsibilityArray">
+        <div class="bullet-point">
+          <li> {{responsibility.description}} </li>
+          <button class="button is-link is-small" (click)="editSelection(responsibility, editModelResponsibilityModal, descInput)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <p class="howManyText">
+          used in: <span class="howManyNumber"> {{responsibility.sonResponsibilities?.length}} </span> project responsibilities
+        </p>
+      </div>
+    </div>
+    <button class="button is-primary" (click)="toggleModal(createModelResponsibilityModal)">Add new Model Responsibility</button>
+  </div>
+</div>
+
+<!-- MODAL TO CREATE A NEW MODEL RESPONSIBILITY !-->
+<div class="modal is-dark" #createModelResponsibilityModal>
+  <div class="modal-background is-dark"></div>
+  <div class="modal-card is-dark">
+    <header class="modal-card-head is-dark">
+      <p class="modal-card-title">Create new Model Responsibility</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(createModelResponsibilityModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="e.g. Description of a Software Engineer" #ResponsibilityDesc>
+        </div>
+      </div>
+      <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link"(click)="createNewModelResponsibility(ResponsibilityDesc.value, createModelResponsibilityModal)"> Create </button>
+      <button class="button is-link is-light" (click)="toggleModal(createModelResponsibilityModal)"> Cancel </button>
+    </footer>
+  </div>
+</div>
+
+<!-- MODAL TO EDIT AN EXISTING MODEL RESPONSIBILITY !-->
+<div class="modal" #editModelResponsibilityModal>
+  <div class="modal-background "></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Edit Model Responsibility</p>
+      <button class="delete" aria-label="close" (click)="toggleModal(editModelResponsibilityModal)"></button>
+    </header>
+    <section class="modal-card-body">
+      <!-- MODAL CONTENT -->
+      <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+          <input #descInput class="input" type="text" placeholder="e.g. Description of a Software Engineer" #ResponsibilityDesc>
+        </div>
+      </div>
+      <!-- MODAL CONTENT -->
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-link" (click)="saveEdit(descInput, editModelResponsibilityModal)"> Save </button>
+      <button class="button is-link is-light" (click)="toggleModal(editModelResponsibilityModal)"> Cancel </button>
+    </footer>
+  </div>
+</div>
