@@ -16,7 +16,15 @@ Grupo 6
 ## Para rodar o sistema
 ### Backend
 Com java instalado.
-```bash
+```
 ./mvnw compile
 ./mvnw package
 java -jar target/sostool-backend-0.0.1-SNAPSHOT.jar
+```
+
+### Frontend
+Com node e npm instalados.
+```
+npm install
+npm run ng serve
+```
