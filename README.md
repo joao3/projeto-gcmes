@@ -12,3 +12,11 @@ Grupo 6
 - João Otávio da Silva
 - Leonardo Gonçalves Chahud
 - Rafael Jun Teramae Dantas
+
+## Para rodar o sistema
+### Backend
+Com java instalado.
+```bash
+./mvnw compile
+./mvnw package
+java -jar target/sostool-backend-0.0.1-SNAPSHOT.jar
