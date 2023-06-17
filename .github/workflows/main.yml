@@ -1,7 +1,8 @@
 name: Docker Compose Actions Workflow
 on: [push, pull_request]
 jobs:
-  test:
+  test-backend:
+    name: test-backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
