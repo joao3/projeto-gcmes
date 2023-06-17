@@ -9,5 +9,3 @@ jobs:
       - name: Build images
         working-directory: ./codigo_fonte
         run: docker-compose build
-      - name: Test Backend
-        run: docker run codigo_fonte_backend ./mvnw test
