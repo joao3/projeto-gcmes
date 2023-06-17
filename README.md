@@ -44,3 +44,8 @@ Na pasta sostool-frontend-master, execute:
 docker buildx build -t sos-frontend .
 docker run -d --name sos-frontend -p 4200:4200 sos-frontend
 ```
+### Docker Compose
+Com docker-compose instalado, na pasta codigo-fonte, execute:
+```
+docker-compose up
+```
