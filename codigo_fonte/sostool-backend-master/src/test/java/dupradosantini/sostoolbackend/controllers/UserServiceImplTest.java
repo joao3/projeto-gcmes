@@ -76,7 +76,7 @@ public class UserServiceImplTest {
 
     @Test
     public void createUser() throws Exception {
-        AppUser user = new AppUser("José", "jose@email.com", "123");
+        AppUser user = new AppUser("Joséaaaaaaaaaaaaaaaa", "jose@email.com", "123");
 
         when(userService.createUser(any(AppUser.class))).thenReturn(user);
 
