@@ -45,7 +45,7 @@ public class UserServiceImplTest {
 
         when(userService.findById(anyInt())).thenReturn(user);
 
-        mockMvc.perform(get("/users/1"))
+        mockMvc.perform(get("/usersaaaaaaaaaaaaa/1"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.name").value("José"));
     }
