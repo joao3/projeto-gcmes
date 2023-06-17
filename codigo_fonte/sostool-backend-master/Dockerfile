@@ -9,4 +9,4 @@ COPY src ./src
 RUN ./mvnw compile
 RUN ./mvnw package
 
-ENTRYPOINT java -jar target/sostool-backend-0.0.1-SNAPSHOT.jar
+CMD [ "java", "-jar", "target/sostool-backend-0.0.1-SNAPSHOT.jar" ]
