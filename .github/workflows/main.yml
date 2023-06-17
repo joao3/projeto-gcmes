@@ -9,4 +9,4 @@ jobs:
         working-directory: ./codigo_fonte
         run: docker-compose build
       - name: Test Backend
-        run: docker run codigo_fonte-backend ./mvnw test
+        run: docker images#run codigo_fonte-backend ./mvnw test
