@@ -1,0 +1,11 @@
+name: Docker Compose Actions Workflow
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build images
+        run: docker-compose build
+      - name: Test Backend
+        run: docker run --name sos-backend-test -p 8081:8081 codigo_fonte-backend ./mvwn test
