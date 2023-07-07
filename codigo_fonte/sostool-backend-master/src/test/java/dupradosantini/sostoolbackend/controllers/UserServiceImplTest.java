@@ -90,7 +90,9 @@ public class UserServiceImplTest {
 
     @Test
     public void createUserInvalidEmail() throws Exception {
+
         AppUser user = new AppUser("José", "joseemail.com", "123");
+        
 
         when(userService.createUser(any(AppUser.class))).thenReturn(user);
 
