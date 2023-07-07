@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @CrossOrigin("*")
 @Controller
@@ -34,8 +35,14 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<AppUser> createUser(@RequestBody AppUser obj){
-        AppUser newAppUser = userService.createUser(obj);
-        return ResponseEntity.ok().body(newAppUser);
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+
+        if (Pattern.matches(emailRegex, obj.getEmail())) {
+            AppUser newAppUser = userService.createUser(obj);
+            return ResponseEntity.ok().body(newAppUser);
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/{userId}/role-history")

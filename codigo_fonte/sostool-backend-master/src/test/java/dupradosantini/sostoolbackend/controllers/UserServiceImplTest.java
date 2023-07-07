@@ -87,4 +87,16 @@ public class UserServiceImplTest {
                 .andExpect(jsonPath("$.name").value("José"))
                 .andExpect(jsonPath("$.email").value("jose@email.com"));
     }
+
+    @Test
+    public void createUserInvalidEmail() throws Exception {
+        AppUser user = new AppUser("José", "joseemail.com", "123");
+
+        when(userService.createUser(any(AppUser.class))).thenReturn(user);
+
+        mockMvc.perform(post("/users")
+                .contentType("application/json")
+                .content("{ \"name\": \"José\", \"email\": \"joseemail.com\", \"password\": \"123\" }"))
+                .andExpect(status().isBadRequest());
+    }
 }
